@@ -84,6 +84,7 @@ function onRemoveLoc(locId) {
 function onSearchAddress(ev) {
     ev.preventDefault()
     const el = document.querySelector('[name=address]')
+    // console.log('el.value:', el.value)
     mapService.lookupAddressGeo(el.value)
         .then(geo => {
             mapService.panTo(geo)

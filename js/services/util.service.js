@@ -10,6 +10,7 @@ export const utilService = {
     updateQueryParams,
     getDistance
 }
+var x=10
 
 function saveToStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value))

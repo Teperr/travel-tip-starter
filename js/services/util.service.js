@@ -55,8 +55,10 @@ function getRandomLatLng() {
 }
 
 function elapsedTime(pastMs) {
+    console.log(pastMs);
     const now = new Date()
     const secondsPast = Math.round((now - pastMs) / 1000)
+    console.log(secondsPast);
 
     if (secondsPast < 60 * 5) return `just now` 
     

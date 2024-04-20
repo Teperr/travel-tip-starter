@@ -1,6 +1,7 @@
 import { utilService } from './services/util.service.js'
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
+var gUserPos=null
 
 window.onload = onInit
 
@@ -36,11 +37,14 @@ function renderLocs(locs) {
     const selectedLocId = getLocIdFromQueryParams()
     console.log('locs:', locs)
     var strHTML = locs.map(loc => {
+        console.log(gUserPos);
+        const distance= gUserPos?utilService.getDistance(gUserPos,loc.geo,'K')+ ' KM ':''
         const className = (loc.id === selectedLocId) ? 'active' : ''
         return `
         <li class="loc ${className}" data-id="${loc.id}">
             <h4>  
                 <span>${loc.name}</span>
+                <span class="distance">${distance}</span>
                 <span title="${loc.rate} stars">${'★'.repeat(loc.rate)}</span>
             </h4>
             <p class="muted">
@@ -155,6 +159,7 @@ function onPanToUserPos() {
         .then(latLng => {
             mapService.panTo({ ...latLng, zoom: 15 })
             unDisplayLoc()
+            gUserPos=latLng
             loadAndRenderLocs()
             flashMsg(`You are at Latitude: ${latLng.lat} Longitude: ${latLng.lng}`)
         })
@@ -204,6 +209,7 @@ function displayLoc(loc) {
     el.querySelector('.loc-name').innerText = loc.name
     el.querySelector('.loc-address').innerText = loc.geo.address
     el.querySelector('.loc-rate').innerHTML = '★'.repeat(loc.rate)
+    el.querySelector('.loc-distance').innerText=document.querySelector('.active .distance').innerText
     el.querySelector('[name=loc-copier]').value = window.location
     el.classList.add('show')
 
